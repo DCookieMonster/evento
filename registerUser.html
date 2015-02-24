@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Evento | User Page</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="images/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+    <script src="js/register.js"></script>
+</head>
+<body id="register">
+
+<header id="header" role="banner">
+    <div class="main-nav">
+        <div class="container">
+            <div class="header-top">
+                <div class="pull-right social-icons">
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                    <a href="#"><i class="fa fa-google-plus"></i></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">
+                        <img class="img-responsive" src="images/logo.png" alt="logo">
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</header>
+<!--/#header-->
+<div >
+    <div class="clear-reg"/>
+<div class="container" >
+    <div class="row text-center pad-top ">
+        <div class="col-md-12">
+            <h2>Evento User Registration Page</h2>
+        </div>
+    </div>
+    <div  id="reg-user" class="row  pad-top">
+
+        <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>   Register Yourself </strong>
+                </div>
+                <div class="panel-body">
+                    <br/>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
+                        <input id="fname" name="fname" type="text" class="form-control" placeholder="First Name" />
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
+                        <input id="lname" name="lname" type="text" class="form-control" placeholder="Last Name" />
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
+                        <input id="bdate" name="bdate" type="text" class="form-control" placeholder="Birth Date" />
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-tag"  ></i></span>
+                        <input id="username" name="username" type="text" class="form-control" placeholder="Desired Username" />
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon">@</span>
+                        <input id="email" name="email" type="text" class="form-control" placeholder="Your Email" />
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
+                        <input id="password" name="password" type="password" class="form-control" placeholder="Enter Password" />
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
+                        <input id="repassword" name="repassword" type="password" class="form-control" placeholder="Retype Password" />
+                    </div>
+
+                    <input id="Continue" style="background-color: forestgreen;color: #ffffff" type="submit" onclick="register()" value="Continue" name="submit">
+
+                    <hr />
+                   <p style="color: #0f0f0f"> Already Registered ?  <a href="loginUser.html" >Login here</a> </p>
+
+                </div>
+
+            </div>
+        </div>
+</div>
+
+
+    <div id="tag-user" style="visibility: hidden">
+        <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>   Your Interests </strong>
+                </div>
+                <div class="panel-body">
+                    <div class="input-tag form-group input-group">                   <input id="tag" name="tags" type="text" placeholder="HashTags" data-role="tagsinput"/>
+                    </div>
+                    <div class="form-group input-group">
+                        <input id="submit" style="background-color: forestgreen;color: #ffffff" type="submit" onclick="tag()" value="Register" name="submit">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="js/gmaps.js"></script>
+<script type="text/javascript" src="js/smoothscroll.js"></script>
+<script type="text/javascript" src="js/jquery.parallax.js"></script>
+<script type="text/javascript" src="js/coundown-timer.js"></script>
+<script type="text/javascript" src="js/jquery.scrollTo.js"></script>
+<script type="text/javascript" src="js/jquery.nav.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+<script src="bTags/bootstrap-tagsinput.min.js"></script>
+<script src="bTags/bootstrap-tagsinput-angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/rainbow.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/generic.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/html.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/javascript.js"></script>
+<script src="bTags/app.js"></script>
+<script src="bTags/app_bs3.js"></script>
+
+</body>
+
+</html>
