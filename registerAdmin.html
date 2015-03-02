@@ -23,6 +23,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
     <script src="js/register.js"></script>
+    <script src="js/valid.js"></script>
 </head>
 <body id="register">
 
@@ -99,24 +100,27 @@
             </div>
         </div>
 
-
-        <div id="tag-user" style="visibility: hidden">
-            <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong>   Your Interests </strong>
-                    </div>
-                    <div class="panel-body">
-                        <div class="input-tag form-group input-group">                   <input id="tag" name="tags" type="text" placeholder="HashTags" data-role="tagsinput"/>
-                        </div>
-                        <div class="form-group input-group">
-                            <input id="submit" style="background-color: forestgreen;color: #ffffff" type="submit" onclick="tag()" value="Register" name="submit">
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+        <div id="alerts" class="alert-danger">
+            <h1 id="alert-txt"></h1>
         </div>
+
+        <!--<div id="tag-user" style="visibility: hidden">-->
+            <!--<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">-->
+                <!--<div class="panel panel-default">-->
+                    <!--<div class="panel-heading">-->
+                        <!--<strong>   Your Interests </strong>-->
+                    <!--</div>-->
+                    <!--<div class="panel-body">-->
+                        <!--<div class="input-tag form-group input-group">                   <input id="tag" name="tags" type="text" placeholder="HashTags" data-role="tagsinput"/>-->
+                        <!--</div>-->
+                        <!--<div class="form-group input-group">-->
+                            <!--<input id="submit" style="background-color: forestgreen;color: #ffffff" type="submit" onclick="tag()" value="Register" name="submit">-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
     </div>
 </div>

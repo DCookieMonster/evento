@@ -23,8 +23,23 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
     <script src="js/register.js"></script>
+    <script src="js/jquery.js"></script>
 </head>
-<body id="register">
+<body id="register" onload="GPS()">
+<script>
+    E={}
+    function GPS(){
+        navigator.geolocation.getCurrentPosition(GetLocation);
+        function GetLocation(location) {
+            E.latitude=location.coords.latitude
+            E.longitude = location.coords.longitude
+        }
+    }
+//    window.setInterval(function(){
+//        /// call your function here
+//        GPS()
+//    }, 5000);
+</script>
 
 <header id="header" role="banner">
     <div class="main-nav">
@@ -69,7 +84,6 @@
                 <div class="panel panel-default">
 
                     <div class="panel-body">
-                        <form role="form" method="post" action="index.php">
                         <br/>
                         <div class="form-group input-group">
                             <span class="input-group-addon"><i class="fa fa-tag"  ></i></span>
@@ -79,18 +93,9 @@
                             <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
                             <input id="password" name="password" type="password" class="form-control" placeholder="Password"required />
                         </div>
-                            <div class="form-group input-group">
-                                <span class="input-group-addon"><i class="fa fa-tag"  ></i></span>
-                                <input id="longitude" name="longitude" type="text" class="form-control" placeholder="Longitude" required/>
-                            </div>
-                            <div class="form-group input-group">
-                                <span class="input-group-addon"><i class="fa fa-tag"  ></i></span>
-                                <input id="latitude" name="latitude" type="text" class="form-control" placeholder="Latitude" required />
-                            </div>
                         <input id="submit" style="background-color: forestgreen;color: #ffffff" type="submit" value="Login" onclick="loginUser()" name="submit">
                             <hr />
                             <p style="color: #0f0f0f"> Not Registered ?  <a href="registerUser.html" >Register here</a> </p>
-                        </form>
                     </div>
 
                 </div>
@@ -99,8 +104,36 @@
 
     </div>
 </div>
+<script>
+    function loginUser(){
+        E.username=$("#username").val()
+        E.password=$("#password").val()
 
-
+        var data = "{\"username\":\""+E.username+"\",\"password\":\""+E.password+"\",\"lon\":\""+ E.longitude+"\",\"lat\":\""+ E.latitude+"\"}";
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "http://hdm.ise.bgu.ac.il/Eservice/EventoService.asmx/LoginUser", //Relative or absolute path to response.php file
+            data: data,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data) {
+                if(data.d=="True"){
+                localStorage.setItem('username', E.username);
+                localStorage.setItem('Admin',"NO");
+                window.location.href = "userPage.html";
+            }
+                    else{
+                        alert("Wrong credentials")
+                    }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+        });
+    }
+</script>
+<script type="text/javascript" src="js/valid.js"></script>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>

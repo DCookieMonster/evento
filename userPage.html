@@ -29,7 +29,7 @@
     <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
     <link href="css/userpage.css" rel="stylesheet">
 </head>
-<body id="register" onload="">
+<body id="register" onload="checkLogin()">
 <script>
     function checkLogin(){
         if(localStorage.getItem("Admin")!="NO"){

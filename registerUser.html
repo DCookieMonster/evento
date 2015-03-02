@@ -81,7 +81,7 @@
                     </div>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-circle-o-notch"  ></i></span>
-                        <input id="bdate" name="bdate" type="text" class="form-control" placeholder="Birth Date" />
+                        <input id="bdate" name="bdate" type="text" class="form-control" placeholder="Birth Date dd-mm-yyyy" />
                     </div>
                     <div class="form-group input-group">
                         <span class="input-group-addon"><i class="fa fa-tag"  ></i></span>
@@ -99,7 +99,10 @@
                         <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
                         <input id="repassword" name="repassword" type="password" class="form-control" placeholder="Retype Password" />
                     </div>
-
+                    <div class="form-group input-group">
+                        <p style="color: #126d55">Alerts</p>
+                        <input id="alert" name="alert"  type="checkbox" class="form-control" value="true">
+                    </div>
                     <input id="Continue" style="background-color: forestgreen;color: #ffffff" type="submit" onclick="register()" value="Continue" name="submit">
 
                     <hr />
@@ -129,10 +132,11 @@
             </div>
         </div>
     </div>
-
+        <div id="alerts" class="alert-danger">
+            <h1 id="alert-txt"></h1>
+        </div>
     </div>
 </div>
-
 
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
