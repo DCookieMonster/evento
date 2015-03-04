@@ -12,6 +12,7 @@
     <link href="css/main.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
 
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
@@ -26,6 +27,11 @@
     <script src="js/jquery.js"></script>
 </head>
 <body id="register" onload="GPS()">
+<script>
+    if(getCookie("user")!=""){
+        window.location.href = "userPage.html";
+    }
+</script>
 <script>
     E={}
     function GPS(){
@@ -80,7 +86,7 @@
         </div>
         <div class="row  pad-top">
 
-            <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+            <div id="log-user" class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
                 <div class="panel panel-default">
 
                     <div class="panel-body">
@@ -100,11 +106,15 @@
 
                 </div>
             </div>
+            <div id="alerts" class="alert-danger">
+                <h1 id="alert-txt"></h1>
+            </div>
         </div>
 
     </div>
 </div>
 <script>
+    $("#alerts").hide()
     function loginUser(){
         E.username=$("#username").val()
         E.password=$("#password").val()
@@ -119,12 +129,15 @@
             dataType: "json",
             success: function(data) {
                 if(data.d=="True"){
-                localStorage.setItem('username', E.username);
-                localStorage.setItem('Admin',"NO");
+                    createCookie("user", E.username,1)
+               // localStorage.setItem('username', E.username);
+                //localStorage.setItem('Admin',"NO");
                 window.location.href = "userPage.html";
             }
                     else{
-                        alert("Wrong credentials")
+                    $("#log-user").hide()
+                    $("#alerts").show()
+                    document.getElementById("alert-txt").innerHTML="Wrong credentials"
                     }
             },
             error: function(jqXHR, textStatus, errorThrown) {

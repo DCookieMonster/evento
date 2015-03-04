@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>$(document).ready(function () {
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(GetAddress);
+    }
+
+});
+$("#location").focusout(function(){
+    navigator.geolocation.getCurrentPosition($("#location").val());
+});
+function GetAddress(position) {
+    var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    var mapOptions = {
+        zoom: 15,
+        center: myLatlng
+    }
+    var map = new google.maps.Map(document.getElementById("mapPlacer"), mapOptions);
+
+    // Place a draggable marker on the map
+    var marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        draggable: true
+    });
+    var geocoder =  new google.maps.Geocoder();
+    geocoder.geocode({ 'latLng': marker.position }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            if (results[0]) {
+                document.getElementById("location").value = results[0].formatted_address;
+            }
+        }
+    });
+    google.maps.event.addListener(marker, 'dragend', function(evt){
+        geocoder.geocode({ 'latLng': marker.position }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                if (results[0]) {
+                    document.getElementById("location").value = results[0].formatted_address;
+                }
+            }
+        });
+    });
+}
+
+</script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<div id="map-canvas"></div>
+<label>Event Location </label>
+<input type="text" id="location" class="form-control">
+<div id="mapPlacer" style="width:500px; height:380px;"></div>
+</body>
+</html>

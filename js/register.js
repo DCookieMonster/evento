@@ -46,8 +46,9 @@ function tag(){
         dataType: "json",
         success: function(data) {
           if(data.d=="OK"){
-            localStorage.setItem('username',username);
-            localStorage.setItem('Admin',"NO");
+            //localStorage.setItem('username',username);
+            //localStorage.setItem('Admin',"NO");
+              createCookie("user",username,1);
             window.location.href = "userPage.html";
             }
             else{
@@ -87,8 +88,9 @@ function registerAdmin(){
         dataType: "json",
         success: function(data) {
             if(data.d=="OK"){
-            localStorage.setItem('username',username);
-            localStorage.setItem('Admin',"YES");
+           // localStorage.setItem('username',username);
+            //localStorage.setItem('Admin',"YES");
+                createCookie("admin",username,1);
             window.location.href = "createEvent.html";
             }
             else{
@@ -119,12 +121,15 @@ function loginAdmin(){
         dataType: "json",
         success: function(data) {
             if (data.d=="OK"){
-            localStorage.setItem('username',username1);
-            localStorage.setItem('Admin',"YES");
+            //localStorage.setItem('username',username1);
+            //localStorage.setItem('Admin',"YES");
+            createCookie("admin",username1,1)
             window.location.href = "createEvent.html";
                 }
             else{
-                alert("Wrong credentials")
+                $("#log-admin").hide()
+                $("#alerts").show()
+                document.getElementById("alert-txt").innerHTML="Wrong credentials"
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -133,3 +138,41 @@ function loginAdmin(){
     });
 }
 
+
+var createCookie = function(name, value, days) {
+    var expires;
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+    }
+    else {
+        expires = "";
+    }
+    document.cookie = name + "=" + value + expires;
+}
+
+function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    return "";
+}
+function delete_cookie( name ) {
+    if( get_cookie( name ) ) {
+        document.cookie = name + "="
+        ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    }
+}
+
+function logout(name){
+    delete_cookie(name);
+}

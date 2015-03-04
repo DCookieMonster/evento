@@ -39,9 +39,9 @@
 <body id="register" onload="checkLogin()">
 <script>
     function checkLogin(){
-        //  if(localStorage.getItem("Admin")!="NO"){
+      //  if(localStorage.getItem("Admin")!="NO"){
         if(getCookie("user")==""){
-            // alert("you are not logged in");
+           // alert("you are not logged in");
             window.location.href="index.html"
 
         }
@@ -92,7 +92,7 @@
                 <h2>User Page</h2>
             </div>
         </div>
-        <div class="row" id="row" >
+        <div class="row" id="row" dir="rtl">
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default template">
                     <div class="panel-heading">
@@ -111,8 +111,8 @@
             </div>
             <br />
 
-        </div>
-        <div id="alerts" class="alert-info" align="center">
+           </div>
+        <div id="alerts" class="alert-info">
             <h1 id="alert-txt"></h1>
         </div>
     </div>
@@ -120,35 +120,20 @@
 </div>
 </div>
 <script>
-    var lat=0;
-    var lon=0;
-    window.onload = function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                console.log(position);
-                lat=position.coords.latitude;
-                lon=position.coords.longitude;
-                ajaxCall()
-            }, function(error) {
-                console.log('Error occurred. Error code: ' + error.code);
-            },{timeout:5000});
-        }else{
-            alert('no geolocation support');
-        }
-    };
     var $template = $(".template");
     $(".template").hide()
     var hash = 2;
     //">[{"EventName":"ddd","Artists":"Aviv gefen","price":23,"tickets":10,"date":"7/15/2015 3:00:52 PM","duration":"34","description":"asdfa fasdfasd","location":"israel "}]
     //string longitude, string latitude
 
-    function ajaxCall(){
-//
-//        navigator.geolocation.getCurrentPosition(GetLocation,{maximumAge:60000, timeout:5000, enableHighAccuracy:true});
-//        function GetLocation(location) {
-//            lat=location.coords.latitude
-//            lon = location.coords.longitude
-//        }
+    $(document).ready(function () {
+        var lat=0;
+        var lon=0;
+        navigator.geolocation.getCurrentPosition(GetLocation);
+        function GetLocation(location) {
+            lat=location.coords.latitude
+            lon = location.coords.longitude
+        }
         var data="{\"longitude\":\""+lon+"\",\"latitude\":\""+lat+"\"}"
         $.ajax({
             type: "POST",
@@ -162,14 +147,14 @@
                     document.getElementById("alert-txt").innerHTML="No Nearby Events"
                     return;
                 }
-                $.each($.parseJSON(data.d), function (i, event) {
+                $.each(data.d, function (i, event) {
                     var $newPanel = $template.clone();
                     $newPanel.find(".collapse").removeClass("in");
                     $newPanel.find(".accordion-toggle").attr("href", "#" + (++hash))
                             .text(event.EventName);
                     $newPanel.find(".panel-body")
-                            .html("Artists: " + event.Artists + "<br>Price: " +event.price+ "<br>Available Tickets: " + event.tickets+"<br>Date:"+Date(event.date.substring(6,event.date.length-2)).toString()+"<br>Duration:"+event.duration+"<br>Description:"+event.description+
-                            "<br>Location:"+event.location);
+                            .text("Artists: " + event.Artists + "\n Price: " +event.price+ "\n Available Tickets: " + event.tickets+" \nDate:"+event.date+" \nDuration:"+event.duration+" \nDescription:"+event.description+
+                    " \nLocation:"+event.location);
                     $newPanel.find(".panel-collapse").attr("id", hash).addClass("collapse").removeClass("in");
 
                     $("#accordion").append($newPanel.fadeIn());
@@ -180,7 +165,7 @@
             }
         });
 
-    };
+    });
 
 
 

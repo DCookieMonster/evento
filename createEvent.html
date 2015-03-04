@@ -26,19 +26,99 @@
     <script src="js/jquery.js"></script>
 
     <link rel="stylesheet" type="text/css" href="date/datepickr.min.css">
-
+    <script src="js/register.js"></script>
+    <script src="js/valid.js"></script>
+    <script src="js/event.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <style>
+        #map-canvas { height: 90%; width: 90% }
+    </style>
 </head>
-<body id="register" onload="checkLogin()">
+<body id="register" onload="">
 <script>
     function checkLogin(){
-        if(localStorage.getItem("Admin")!="YES"){
+//        if(localStorage.getItem("Admin")!="YES"){
+        if(getCookie("admin"!="")){
             alert("you are not logged in");
             window.location.href="index.html"
 
         }
     }
 </script>
+<script type="text/javascript">
+    var geocoder;
+    var map;
+    var marker;
+    var loc;
+    function initialize() {
+        geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(-34.397, 150.644);
+        var mapOptions = {
+            zoom: 8,
+            center: latlng
+        }
+        map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    }
 
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+    $(document).ready(function () {
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(GetAddress);
+        }
+
+    });
+
+    function GetAddress(position) {
+        var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        var mapOptions = {
+            zoom: 15,
+            center: myLatlng
+        }
+        var map = new google.maps.Map(document.getElementById("mapPlacer"), mapOptions);
+
+        // Place a draggable marker on the map
+        marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            draggable: true
+        });
+        var geocoder =  new google.maps.Geocoder();
+        geocoder.geocode({ 'latLng': marker.position }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                if (results[0]) {
+                    document.getElementById("location").value = results[0].formatted_address;
+                    loc=results[0].geometry.location;
+                }
+            }
+        });
+        google.maps.event.addListener(marker, 'dragend', function(evt){
+            geocoder.geocode({ 'latLng': marker.position }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        document.getElementById("location").value = results[0].formatted_address;
+                    }
+                }
+            });
+        });
+    }
+    function findMe() {
+        var address = document.getElementById("location").value;
+        geocoder.geocode( { 'address': address}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                marker.setPosition(results[0].geometry.location);
+                loc=results[0].geometry.location
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
+    }
+
+
+</script>
 <header id="header" role="banner">
     <div class="main-nav">
         <div class="container">
@@ -61,13 +141,23 @@
                         <img class="img-responsive" src="images/logo.png" alt="logo">
                     </a>
                 </div>
-
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="scroll"><a href="index.html">Home</a></li>
+                        <li class="scroll active"><a href="createEvent.html">Event</a></li>
+                        <li class="scroll"><a href="index.html" onclick="logout('admin')">Logout</a></li>
+                        <li class="scroll"><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 </header>
 <!--/#header-->
 <div >
+
+    <div class="clear-reg"/>
+    <div class="clear-reg"/>
     <div class="clear-reg"/>
     <div class="container" >
         <div class="row text-center pad-top ">
@@ -75,7 +165,7 @@
                 <h2>Create New Event</h2>
             </div>
         </div>
-        <div  id="reg-user" class="row  pad-top">
+        <div  id="reg-event" class="row  pad-top">
 
             <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
                 <div class="panel panel-default">
@@ -87,7 +177,7 @@
                         </div>
                         <div class="form-group input-group">
                             <span class="input-group-addon"><i class="fa  fa-calendar-o"  ></i></span>
-                            <input id="datepicker" name="date" type="text" class="form-control" placeholder="Date dd-mm-yyyy" required="required"/>
+                            <input id="date" name="date" type="text" class="form-control" placeholder="Date dd-mm-yyyy" required="required"/>
                         </div>
 
                         <div class="form-group input-group">
@@ -100,7 +190,7 @@
                         </div>
                         <div class="form-group input-group">
                             <span class="input-group-addon"><i class="fa fa-location-arrow"  ></i></span>
-                            <input id="location" name="location" type="text" class="form-control" placeholder="Location"required="required" />
+                            <input id="location" name="location" type="text" class="form-control" onfocusout="findMe()" placeholder="Location"required="required" />
                         </div>
                         <div class="form-group input-group">
                             <span class="input-group-addon"><i class="fa fa-user"  ></i></span></span>
@@ -123,24 +213,33 @@
                             </div>
                         <input id="create" style="background-color: forestgreen;color: #ffffff" type="submit" onclick="insertEvent()" value="Create" name="submit">
 
-
                     </div>
 
                 </div>
             </div>
+            <div class="col-md-4">
+                <div id="map-canvas"></div>
+                <div id="mapPlacer" style="width:100%; height:400px;"></div>
+            </div>
         </div>
 
+        <div id="alert-err" class="alert-danger" align="center">
+            <h1 id="alert-txt1"></h1>
+        </div>
+        <div id="alerts" class="alert-info" align="center">
+            <h1 id="alert-txt"></h1>
+        </div>
 </div>
 </div>
 
-<script type="text/javascript" src="js/valid.js"></script>
+<!--<script type="text/javascript" src="js/valid.js"></script>-->
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>-->
 <!--<script type="text/javascript" src="js/gmaps.js"></script>-->
 <script type="text/javascript" src="js/smoothscroll.js"></script>
 <script type="text/javascript" src="js/jquery.parallax.js"></script>
-<script type="text/javascript" src="js/coundown-timer.js"></script>
+<!--<script type="text/javascript" src="js/coundown-timer.js"></script>-->
 <script type="text/javascript" src="js/jquery.scrollTo.js"></script>
 <script type="text/javascript" src="js/jquery.nav.js"></script>
 <!--<script type="text/javascript" src="js/main.js"></script>-->

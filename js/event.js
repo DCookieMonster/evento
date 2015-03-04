@@ -1,19 +1,29 @@
 /**
  * Created by dor on 2/24/15.
  */
+getAddr = function(addr, f){
+    if(typeof addr != 'undefined' && addr != null) {
+        geocoder.geocode( { address: addr }, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                f('ok', results);
+            } else {
+                f('error', null);
+            }
+        });
+    } else {
+        f('error', null);
+    }
+}
 
+var url="http://hdm.ise.bgu.ac.il/Eservice/EventoService.asmx"
 
 function insertEvent(){
-    D={}
+    var D={}
     var address = document.getElementById("location").value;
-    var geocoder = new google.maps.Geocoder();
 
-    geocoder.geocode( { 'address': address}, function(results, status) {
-        var location = results[0].geometry.location;
-        alert(location.lat() + '' + location.lng());
-        D.lat=location.lat()
-        D.lng=location.lng()
-    });
+        D.lat = loc.lat()
+        D.lng = loc.lng()
+
     var eventName = $("#eventName").val();
     var Date =$("#date").val();
     var hour=$("#hour").val();
@@ -45,26 +55,38 @@ function insertEvent(){
     }
 //string eventManager,string name, string date, string hour, string time, string artist,
  //   string description, string price, string numOfTickets,string longitude, string latitude)
-    var data = {
-        "eventManager": localStorage.getItem("username"),
-        "date": Date,
-        "hour": hour,
-        "time": time,
-        "artist": artist,
-        "description" : description,
-        "price": price,
-        "numOfTickets":tickets,
-        "longitude": D.lat,
-        "latitude" : D.lng,
-        "tags": $("#tag").val()
-    };
+    var data = "{\"eventManager\":\""+getCookie("admin")+"\",\"name\":\""+eventName+"\",\"date\":\""+Date+"\",\"hour\":\""+hour+"\",\"time\":\""+time+"\",\"artist\":\""+
+            artist+"\",\"description\":\""+description+"\",\"price\":\""+price+"\",\"numOfTickets\":\""+tickets+"\",\"longitude\":\""+
+        D.lng+"\",\"latitude\":\""+ D.lat+"\",\"tags\":\""+$("#tag").val()+"\",\"address\":\""+address+"\"}"
+    //var d1ata = {
+    //    "eventManager": localStorage.getItem("username"),
+    //    "date": Date,
+    //    "hour": hour,
+    //    "time": time,
+    //    "artist": artist,
+    //    "description" : description,
+    //    "price": price,
+    //    "numOfTickets":tickets,
+    //    "longitude": D.lat,
+    //    "latitude" : D.lng,
+    //    "tags": $("#tag").val()
+    //};
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: "index.php", //Relative or absolute path to response.php file
+        url: url+"/AddEvent", //Relative or absolute path to response.php file
         data: data,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
         success: function(data) {
-
+            if(data.d=="OK"){
+                $("#reg-event").hide()
+                document.getElementById("alert-txt").innerHTML="Event Was Created!"
+            }
+            else{
+                $("#reg-event").hide()
+                document.getElementById("alert-txt1").innerHTML="You Already created an Event with this name"
+            }
 
         },
         error: function(jqXHR, textStatus, errorThrown) {
