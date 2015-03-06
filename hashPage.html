@@ -39,9 +39,9 @@
 <body id="register" onload="checkLogin()">
 <script>
     function checkLogin(){
-      //  if(localStorage.getItem("Admin")!="NO"){
+        //  if(localStorage.getItem("Admin")!="NO"){
         if(getCookie("user")==""){
-           // alert("you are not logged in");
+            // alert("you are not logged in");
             window.location.href="index.html"
 
         }
@@ -71,9 +71,9 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="scroll"><a href="index.html">Home</a></li>
-                        <li class="scroll active"><a href="userPage.html">Event</a></li>
-                        <li class="scroll"><a href="#">Hashtags</a></li>
+                        <li class="scroll"><a onclick="moveTo('index.html')">Home</a></li>
+                        <li class="scroll "><a onclick="moveTo('userPage.html')">Event</a></li>
+                        <li class="scroll active"><a onclick="moveTo('hashPage.html')">Hashtags</a></li>
                         <li class="scroll"><a href="#">About</a></li>
                         <li><a class="no-scroll" href="index.html" onclick="logout('user')">logout</a></li>
                         <li class="scroll"><a href="#">Contact</a></li>
@@ -89,10 +89,10 @@
     <div class="container" >
         <div class="row text-center pad-top ">
             <div class="col-md-12">
-                <h2>User Page</h2>
+                <h2>User Page - By HashTag Events</h2>
             </div>
         </div>
-        <div class="row" id="row" dir="rtl">
+        <div class="row" id="row" >
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default template">
                     <div class="panel-heading">
@@ -111,8 +111,8 @@
             </div>
             <br />
 
-           </div>
-        <div id="alerts" class="alert-info">
+        </div>
+        <div id="alerts" class="alert-info" align="center">
             <h1 id="alert-txt"></h1>
         </div>
     </div>
@@ -120,41 +120,35 @@
 </div>
 </div>
 <script>
+
     var $template = $(".template");
     $(".template").hide()
     var hash = 2;
     //">[{"EventName":"ddd","Artists":"Aviv gefen","price":23,"tickets":10,"date":"7/15/2015 3:00:52 PM","duration":"34","description":"asdfa fasdfasd","location":"israel "}]
     //string longitude, string latitude
 
-    $(document).ready(function () {
-        var lat=0;
-        var lon=0;
-        navigator.geolocation.getCurrentPosition(GetLocation);
-        function GetLocation(location) {
-            lat=location.coords.latitude
-            lon = location.coords.longitude
-        }
-        var data="{\"longitude\":\""+lon+"\",\"latitude\":\""+lat+"\"}"
+
+        var data="{\"username\":\""+getCookie("user")+"\"}"
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: url+"/GetEventsNearBy", //Relative or absolute path to response.php file
+            url: url+"/GetEventsByHashTags", //Relative or absolute path to response.php file
             data: data,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(data) {
                 if(data.d=="[]"){
-                    document.getElementById("alert-txt").innerHTML="No Nearby Events"
+                    document.getElementById("alert-txt").innerHTML="No Interesting Events"
                     return;
                 }
-                $.each(data.d, function (i, event) {
+                $.each($.parseJSON(data.d), function (i, event) {
                     var $newPanel = $template.clone();
                     $newPanel.find(".collapse").removeClass("in");
                     $newPanel.find(".accordion-toggle").attr("href", "#" + (++hash))
                             .text(event.EventName);
                     $newPanel.find(".panel-body")
-                            .text("Artists: " + event.Artists + "\n Price: " +event.price+ "\n Available Tickets: " + event.tickets+" \nDate:"+event.date+" \nDuration:"+event.duration+" \nDescription:"+event.description+
-                    " \nLocation:"+event.location);
+                            .html("Artists: " + event.Artists + "<br>Price: " +event.price+ "<br>Available Tickets: " + event.tickets+"<br>Date:"+Date(event.date.substring(6,event.date.length-2)).toString()+"<br>Duration:"+event.duration+"<br>Description:"+event.description+
+                            "<br>Location:"+event.location);
                     $newPanel.find(".panel-collapse").attr("id", hash).addClass("collapse").removeClass("in");
 
                     $("#accordion").append($newPanel.fadeIn());
@@ -163,7 +157,7 @@
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
             }
-        });
+
 
     });
 

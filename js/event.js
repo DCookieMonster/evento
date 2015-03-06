@@ -18,6 +18,7 @@ getAddr = function(addr, f){
 var url="http://hdm.ise.bgu.ac.il/Eservice/EventoService.asmx"
 
 function insertEvent(){
+    $("#event-ctl").find(".err-log").remove();
     var D={}
     var address = document.getElementById("location").value;
 
@@ -25,7 +26,7 @@ function insertEvent(){
         D.lng = loc.lng()
 
     var eventName = $("#eventName").val();
-    var Date =$("#date").val();
+    var tmpDate =$("#date").val();
     var hour=$("#hour").val();
     var time=$("#time").val();
     var description=$("#description").val();
@@ -33,20 +34,22 @@ function insertEvent(){
     var tags = $("#tag").val();
     var price =$("#price").val();
     var tickets =$("#tickets").val();
-    //if (isValidDate(Date)){
-    //    alert("Wrong Date Format")
-    //    return
-    //}
-    if (!isValidPosNum(price)){
-        alert("Wrong Price Format")
+    var dateArr=tmpDate.split("-");
+    var Date=dateArr[2]+"-"+dateArr[1]+"-"+dateArr[0]
+    if (!isValidDate(Date)){
+        $("#event-ctl").prepend("<div class=\"err-log\"><h4 style='color: #d2322d' align='center'>You can not choose a past date</h4></div>")
         return
     }
-    if (!isValidPosNum(tickets)){
-        alert("Wrong Tickects Fromat")
+    if (!isValidPosNum(price)){
+        $("#event-ctl").prepend("<div class=\"err-log\"><h4 style='color: #d2322d' align='center'>Wrong Price Format - Should be positive number</h4></div>")
+        return
+    }
+    if (tickets!=parseInt(tickets, 10)){
+        $("#event-ctl").prepend("<div class=\"err-log\"><h4 style='color: #d2322d' align='center'>Wrong Tickets Format - Should be positive Int number</h4></div>")
         return
     }
     if(!isValidPosNum(time)){
-        alert("Wrong Time Format")
+        $("#event-ctl").prepend("<div class=\"err-log\"><h4 style='color: #d2322d' align='center'>Wrong Duration Format - Should be positive number</h4></div>")
         return
     }
     if(!IsValidTime(hour)){

@@ -8,20 +8,7 @@ function validateEmail(email) {
     return re.test(email);
 }
 
-function isValidDate(s) {
-    if(!s.contains('/'))
-    return false
-    var comp = text.split('/');
-    var m = parseInt(comp[0], 10);
-    var d = parseInt(comp[1], 10);
-    var y = parseInt(comp[2], 10);
-    var date = new Date(y, m - 1, d);
-    if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
-        return true
-    } else {
-        return false
-    }
-}
+
  function isValidID(id){
      return (isNumber(id)&& id.length==9 && id>0)
  }
@@ -34,5 +21,31 @@ function isNumber(n) {
 
 function IsValidTime(t){
     return /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(t);
+
+}
+
+function isValidDate(d){
+    var b= /^([0-2]?[0-9]|3[0-1])-(0[0-9]|1[0-2])-(20[2-9][0-9]|201[5-9])$/.test(d);
+    if(b)
+    {
+        var res = d.split("-");
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        if(yyyy<res[2]){
+            return b
+        }
+        if(yyyy==res[2]&&mm<res[1]){
+            return b
+        }
+        if (yyyy==res[2] && mm==res[1] && dd<=res[0]){
+            return b
+        }
+        return false
+    }
+    else{
+        return b
+    }
 
 }

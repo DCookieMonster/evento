@@ -2,7 +2,7 @@
  * Created by dor on 2/24/15.
  */
 
-var url="http://hdm.ise.bgu.ac.il/Eservice/EventoService.asmx"
+var url="http://hdm.ise.bgu.ac.il/Eservice/EventoService.asmx";
 var username;
 var fname;
 var lname;
@@ -11,30 +11,32 @@ var password;
 var bdate;
 var alert;
 function register(){
-    password=document.getElementById("password").value
-    var repass=document.getElementById("repassword").value
+    password=document.getElementById("password").value;
+    var repass=document.getElementById("repassword").value;
     if (password!=repass){
-        alert("Password does not match")
+        alert("Password does not match");
         return
     }
-    username=document.getElementById("username").value
-    fname=document.getElementById("fname").value
-    lname=document.getElementById("lname").value
-    email=document.getElementById("email").value
-    bdate=document.getElementById("bdate").value
+    username=document.getElementById("username").value;
+    fname=document.getElementById("fname").value;
+    lname=document.getElementById("lname").value;
+    email=document.getElementById("email").value;
+    var tmpDate=document.getElementById("bdate").value;
+    var dateArr=tmpDate.split("-");
+     bdate=dateArr[2]+"-"+dateArr[1]+"-"+dateArr[0];
     if(!validateEmail(email)){
-        alert("Wrong Email Format")
+        alert("Wrong Email Format");
         return;
     }
-    alert=document.getElementById("alert").checked == true
-    $("#reg-user").hide()
+    alert=document.getElementById("alert").checked == true;
+    $("#reg-user").hide();
 
-    document.getElementById("tag-user").style.visibility="visible"
+    document.getElementById("tag-user").style.visibility="visible";
     $("#tag-user").show()
 }
 
 function tag(){
-    var hash=$("#tag").val()
+    var hash=$("#tag").val();
     var data = "{\"firstName\":\""+fname+"\",\"lastName\":\""+lname+"\",\"username\":\""+username+"\",\"password\":\""+password+"\",\"email\":\""+email+"\",\"bDate\":\""+
         bdate+"\",\"tags\":\""+hash+"\",\"alert\":\""+alert+"\"}";
     $.ajax({
@@ -52,8 +54,8 @@ function tag(){
             window.location.href = "userPage.html";
             }
             else{
-              $("#tag-user").hide()
-              $("#alerts").show()
+              $("#tag-user").hide();
+              $("#alerts").show();
               document.getElementById("alert-txt").innerHTML="Username is already taken"
             }
         },
@@ -66,16 +68,16 @@ function tag(){
 
 
 function registerAdmin(){
-    password=document.getElementById("password").value
-    var repass=document.getElementById("repassword").value
+    password=document.getElementById("password").value;
+    var repass=document.getElementById("repassword").value;
     if (password!=repass){
-        alert("Password does not match")
+        alert("Password does not match");
         return
     }
-    username=document.getElementById("username").value
-    email=document.getElementById("email").value
+    username=document.getElementById("username").value;
+    email=document.getElementById("email").value;
     if (!validateEmail(email)){
-        alert("Not Valid Email Format")
+        alert("Not Valid Email Format");
         return
     }
     var data = "{\"username\":\""+ username+"\",\"password\":\""+password+"\",\"email\" : \""+email+"\"}";
@@ -87,15 +89,15 @@ function registerAdmin(){
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data) {
-            if(data.d=="OK"){
+            if(data.d=="True"){
            // localStorage.setItem('username',username);
             //localStorage.setItem('Admin',"YES");
                 createCookie("admin",username,1);
             window.location.href = "createEvent.html";
             }
             else{
-                $("#reg-user").hide()
-                $("#alerts").show()
+                $("#reg-user").hide();
+                $("#alerts").show();
                 document.getElementById("alert-txt").innerHTML="Username is already taken"
             }
         },
@@ -108,8 +110,8 @@ function registerAdmin(){
 }
 
 function loginAdmin(){
-    var username1=document.getElementById("username").value
-    var password1=document.getElementById("password").value
+    var username1=document.getElementById("username").value;
+    var password1=document.getElementById("password").value;
 
     var data = "{\"username\":\""+username1+"\",\"password\":\""+password1+"\"}";
     $.ajax({
@@ -123,12 +125,12 @@ function loginAdmin(){
             if (data.d=="OK"){
             //localStorage.setItem('username',username1);
             //localStorage.setItem('Admin',"YES");
-            createCookie("admin",username1,1)
+            createCookie("admin",username1,1);
             window.location.href = "createEvent.html";
                 }
             else{
-                $("#log-admin").hide()
-                $("#alerts").show()
+                $("#log-admin").hide();
+                $("#alerts").show();
                 document.getElementById("alert-txt").innerHTML="Wrong credentials"
             }
         },
@@ -150,7 +152,7 @@ var createCookie = function(name, value, days) {
         expires = "";
     }
     document.cookie = name + "=" + value + expires;
-}
+};
 
 function getCookie(c_name) {
     if (document.cookie.length > 0) {
@@ -167,12 +169,13 @@ function getCookie(c_name) {
     return "";
 }
 function delete_cookie( name ) {
-    if( get_cookie( name ) ) {
-        document.cookie = name + "="
+        document.cookie = name + "=";
         ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
-    }
 }
-
 function logout(name){
     delete_cookie(name);
+}
+
+function moveTo(page){
+    window.location.href=page
 }

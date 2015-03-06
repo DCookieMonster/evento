@@ -71,9 +71,9 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="scroll"><a href="index.html">Home</a></li>
-                        <li class="scroll active"><a href="userPage.html">Event</a></li>
-                        <li class="scroll"><a href="#">Hashtags</a></li>
+                        <li class="scroll"><a onclick="moveTo('index.html')">Home</a></li>
+                        <li class="scroll active "><a onclick="moveTo('userPage.html')">Event</a></li>
+                        <li class="scroll "><a onclick="moveTo('hashPage.html')">Hashtags</a></li>
                         <li class="scroll"><a href="#">About</a></li>
                         <li><a class="no-scroll" href="index.html" onclick="logout('user')">logout</a></li>
                         <li class="scroll"><a href="#">Contact</a></li>
@@ -89,9 +89,15 @@
     <div class="container" >
         <div class="row text-center pad-top ">
             <div class="col-md-12">
-                <h2>User Page</h2>
+                <h2>User Page - Nearby Events</h2>
             </div>
         </div>
+        <div id="dist-div" class="row text-center pad-top" align="center">
+                <p>Choose your distance (KM):</p>
+                <input name="dist" id="dist" type="number" value="15" min="0" max="40" style=" color: #126d55"/>
+
+                <button class="btn btn-success" onclick="changeDist()" id="btn-sit">Submit</button>
+            </div>
         <div class="row" id="row" >
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default template">
@@ -128,7 +134,7 @@
                 console.log(position);
                 lat=position.coords.latitude;
                 lon=position.coords.longitude;
-                ajaxCall()
+                ajaxCall(15)
             }, function(error) {
                 console.log('Error occurred. Error code: ' + error.code);
             },{timeout:5000});
@@ -142,14 +148,14 @@
     //">[{"EventName":"ddd","Artists":"Aviv gefen","price":23,"tickets":10,"date":"7/15/2015 3:00:52 PM","duration":"34","description":"asdfa fasdfasd","location":"israel "}]
     //string longitude, string latitude
 
-    function ajaxCall(){
+    function ajaxCall(dist){
 //
 //        navigator.geolocation.getCurrentPosition(GetLocation,{maximumAge:60000, timeout:5000, enableHighAccuracy:true});
 //        function GetLocation(location) {
 //            lat=location.coords.latitude
 //            lon = location.coords.longitude
 //        }
-        var data="{\"longitude\":\""+lon+"\",\"latitude\":\""+lat+"\"}"
+        var data="{\"longitude\":\""+lon+"\",\"latitude\":\""+lat+"\",\"dist\":\""+dist+"\"}"
         $.ajax({
             type: "POST",
             dataType: "json",
