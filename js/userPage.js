@@ -3,7 +3,8 @@
  */
 var b=false;
 function changeDist(){
-    $("#panel-heading").hide()
+    $("#panel").hide()
+
     if (b)
         $("#h-err").hide()
     var dist=$("#dist").val()
