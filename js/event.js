@@ -84,10 +84,12 @@ function insertEvent(){
         success: function(data) {
             if(data.d=="OK"){
                 $("#reg-event").hide()
+                $("#map-row").hide()
                 document.getElementById("alert-txt").innerHTML="Event Was Created!"
             }
             else{
                 $("#reg-event").hide()
+                $("#map-row").hide()
                 document.getElementById("alert-txt1").innerHTML="You Already created an Event with this name"
             }
 
